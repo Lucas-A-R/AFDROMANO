@@ -68,3 +68,18 @@ O programa foi testado com os seguintes exemplos:
 Todos os testes foram **aceitos corretamente** ✅.
 
 ---
+
+## 📊 Diagrama do Autômato (Mermaid)
+
+```mermaid
+flowchart LR
+    q0("Início") -->|I| q0
+    q0 -->|V| q1
+    q0 -->|X| q2
+    q1 -->|I| q1
+    q2 -->|X| q2
+    q2 -->|L| q3
+    q2 -->|C| q4
+    q4 -->|D| q5
+    q4 -->|M| q6
+    q6 -->|Fim| qf(("Aceito ✅"))
