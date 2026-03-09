@@ -1,7 +1,7 @@
 # 🏛️ Autômato Finito Determinístico para Números Romanos
 
 ## 📌 Objetivo
-Este projeto implementa um **Autômato Finito Determinístico (AFD)** em Ruby para validar e converter números romanos em valores decimais.  
+Este projeto implementa um **Autômato Finito Determinístico (AFD)** em Ruby para validar e converter números romanos em valores decimais até **3999 (MMMCMXCIX)**.  
 O programa garante que a entrada respeite as regras formais da notação romana e rejeita cadeias inválidas.
 
 ---
@@ -9,27 +9,24 @@ O programa garante que a entrada respeite as regras formais da notação romana 
 ## ⚙️ Estrutura do Código
 
 ### Classe `RomanAFD`
-- **Constante `ROMAN_VALUES`**  
-  Mapeia cada símbolo romano para seu valor decimal.
-  
+- **Atributos internos**  
+  - `@cadeia`: cadeia de entrada.  
+  - `@indice`: posição atual na leitura.  
+  - `@valor`: valor decimal acumulado.  
+  - `@estado`: estado atual do autômato.
+
 - **Método `initialize(cadeia)`**  
   Recebe a cadeia de entrada e inicializa variáveis de controle.
 
 - **Método `proximo`**  
-  Retorna o próximo símbolo da cadeia ou `nil` se chegou ao fim.
+  Retorna o próximo símbolo da cadeia ou vazio se chegou ao fim.
 
 - **Método `iniciar`**  
   - Percorre a cadeia símbolo por símbolo.  
-  - Aplica regras de repetição e subtração.  
-  - Soma ou subtrai valores conforme necessário.  
-  - Valida se a entrada é correta; caso contrário, rejeita.  
-  - Imprime se a cadeia foi **Aceita 😀** ou **Rejeitada ❌**.
-
-- **Método `valido_subtracao?(s1, s2)`**  
-  Verifica se uma subtração é permitida (ex: `I` antes de `V` ou `X`).
-
-- **Método `invalido(msg)`**  
-  Imprime mensagem de rejeição quando a entrada não respeita as regras.
+  - Aplica transições explícitas para milhares, centenas, dezenas e unidades.  
+  - Valida regras de repetição e subtração.  
+  - Imprime se a cadeia foi **Aceita 😀** ou **Rejeitada ❌**.  
+  - Mostra o estado atual e o valor parcial a cada passo.
 
 ---
 
@@ -47,24 +44,10 @@ O programa garante que a entrada respeite as regras formais da notação romana 
 3. **Ordem decrescente**  
    Símbolos devem aparecer em ordem decrescente, exceto nos casos de subtração.
 
----
-
-## 🧪 Testes Realizados
-O programa foi testado com os seguintes exemplos:
-
-| Romano      | Decimal |
-|-------------|---------|
-| III         | 3       |
-| IV          | 4       |
-| IX          | 9       |
-| XIV         | 14      |
-| XXIX        | 29      |
-| XLII        | 42      |
-| LXXXVIII    | 88      |
-| CXCIV       | 194     |
-| MCMXC       | 1990    |
-| MMXXIV      | 2024    |
-
-Todos os testes foram **aceitos corretamente** ✅.
+4. **Limite máximo**  
+   O valor máximo aceito é **3999**. Cadeias que ultrapassem esse limite são rejeitadas.
 
 ---
+
+## 📊 Diagrama (visão geral)
+
