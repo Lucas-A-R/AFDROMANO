@@ -49,5 +49,4 @@ O programa garante que a entrada respeite as regras formais da notação romana 
 
 ---
 
-## 📊 Diagrama (visão geral)
 
