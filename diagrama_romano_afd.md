@@ -34,22 +34,27 @@ Se fosse um **Moore**, a saída dependeria apenas do estado, mas aqui precisamos
 
 ## Exemplos de Transições
 
-- Entrada: `III`  
-  - q0 --I--> q0 (saída +1)  
-  - q0 --I--> q0 (saída +1)  
-  - q0 --I--> q0 (saída +1)  
-  - Estado final em q0, saída total = 3 ✅
+- Entrada: `XXVII`  
+  - q0 --X--> qX (valor +10)  
+  - qX --X--> qXX (valor +20)  
+  - qXX --V--> qXXV (valor +25)  
+  - qXXV --I--> qXXVI (valor +26)  
+  - qXXVI --I--> qXXVII (valor +27)  
+  - Estado final em qXXVII, saída total = 27 ✅
 
-- Entrada: `IV`  
-  - q0 --I--> q0 (aguarda próximo)  
-  - q0 --V--> q1 (subtração válida, saída +4)  
-  - Estado final em q1, saída total = 4 ✅
+- Entrada: `CDLVI`  
+  - q0 --C--> qC (valor +100)  
+  - qC --D--> qCD (valor +400)  
+  - qCD --L--> qCDL (valor +450)  
+  - qCDL --V--> qCDLV (valor +455)  
+  - qCDLV --I--> qCDLVI (valor +456)  
+  - Estado final em qCDLVI, saída total = 456 ✅
 
-- Entrada inválida: `IIII`  
-  - q0 --I--> q0  
-  - q0 --I--> q0  
-  - q0 --I--> q0  
-  - q0 --I--> ERRO (repetição > 3) ❌
+- Entrada inválida: `MMMM`  
+  - q0 --M--> qM1 (valor +1000)  
+  - qM1 --M--> qM2 (valor +2000)  
+  - qM2 --M--> qM3 (valor +3000)  
+  - qM3 --M--> ERRO (repetição > 3) ❌
 
 ---
 
@@ -57,20 +62,44 @@ Se fosse um **Moore**, a saída dependeria apenas do estado, mas aqui precisamos
 
 ```mermaid
 flowchart LR
-    q0(("q0 - início")) -->|I| q0
-    q0 -->|V| q1
-    q0 -->|X| q2
-    q0 -->|L| q3
-    q0 -->|C| q4
-    q0 -->|D| q5
-    q0 -->|M| q6
+    q0(("q0 - início")) -->|I,V,X,L,C,D,M| estados
 
-    q0 -->|IIII| erro(("Erro ❌"))
-    q1 -->|I| q1
-    q2 -->|X| q2
-    q2 -->|L| q3
-    q2 -->|C| q4
-    q4 -->|D| q5
-    q4 -->|M| q6
+    %% Milhares
+    q0 -->|M| qM1
+    qM1 -->|M| qM2
+    qM2 -->|M| qM3
+    qM3 -->|M| erro(("Erro ❌ - máximo 3999"))
 
-    q6 --> fim(("Aceito ✅"))
+    %% Centenas
+    q0 -->|C| qC
+    qC -->|C| qCC
+    qCC -->|C| qCCC
+    qC -->|D| qCD
+    qC -->|M| qCM
+    q0 -->|D| qD
+    qD -->|C| qDC -->|C| qDCC -->|C| qDCCC
+
+    %% Dezenas
+    q0 -->|X| qX
+    qX -->|X| qXX -->|X| qXXX
+    qX -->|L| qXL
+    qX -->|C| qXC
+    q0 -->|L| qL
+    qL -->|X| qLX -->|X| qLXX -->|X| qLXXX
+
+    %% Unidades
+    q0 -->|I| qI1 -->|I| qI2 -->|I| qI3
+    qI1 -->|V| qIV
+    qI1 -->|X| qIX
+    q0 -->|V| qV -->|I| qVI -->|I| qVII -->|I| qVIII
+
+    %% Finais
+    qM1 --> fim(("Aceito ✅"))
+    qM2 --> fim
+    qM3 --> fim
+    qC --> fim
+    qD --> fim
+    qX --> fim
+    qL --> fim
+    qI1 --> fim
+    qV --> fim
